@@ -1,4 +1,10 @@
+import numpy as np
+import matplotlib as plt
+import pandas as pd
 
+# global parameters 
+n_iterations = 10000
+learning_rate = 0.1
 
 def initialize_parameters(n_x, n_y):
   # initializes parameters:
@@ -125,22 +131,16 @@ def model(Y, X, learning_rate, n_iterations):
     params = update_parameters(params, grads, learning_rate)
   return(params)
 
+def main():
+  iris = pd.read_csv('iris.csv')
 
+  y = pd.get_dummies(iris[['species']]).as_matrix().T
+  x = iris.drop('species', 1).as_matrix().T
 
-import numpy as np
-import matplotlib as plt
-import pandas as pd
+  np.random.seed(111)
+  model(Y = y, X = x, learning_rate = 0.1, n_iterations = 10000)
 
-iris = pd.read_csv('iris.csv')
-
-
-y = pd.get_dummies(iris[['species']]).as_matrix().T
-x = iris.drop('species', 1).as_matrix().T
-
-
-
-model(Y = y, X = x, learning_rate = 0.1, n_iterations = 10000)
-
-
+if __name__ == "__main__":
+    main()
 
 
