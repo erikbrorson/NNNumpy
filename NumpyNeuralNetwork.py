@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib as plt
 import pandas as pd
+from sklearn.preprocessing import normalize
 
 # global parameters 
-n_iterations = 20000
-learning_rate = 0.1
+n_iterations = 40000
+learning_rate = 0.5
 
 def initialize_parameters(n_x, n_y):
     # initializes parameters:
@@ -15,9 +16,9 @@ def initialize_parameters(n_x, n_y):
     # Returns a dictionary, params
     
     # Initialize the parameters
-    w1 = np.random.randn(5, n_x) * 0.01
+    w1 = np.random.randn(5, n_x) * 0.02
     b1 = np.zeros((5, 1))
-    w2 = np.random.randn(n_y, 5) * 0.01
+    w2 = np.random.randn(n_y, 5) * 0.02
     b2 = np.zeros((n_y, 1))
     
     # now create the return dict params
@@ -27,6 +28,7 @@ def initialize_parameters(n_x, n_y):
                         'b2':b2}
     
     return(params)
+    
 def linear_forward(A, w, b):
 
     Z = np.dot(w, A) + b
@@ -50,7 +52,7 @@ def forward_prop(A, w, b, activation):
 
 def softmax(Z):
     exp = np.exp(Z)
-    A     = exp / np.sum(exp, axis=0)
+    A   = exp / np.sum(exp, axis=0)
     return(A, Z)
 
 def relu(Z):
@@ -136,8 +138,10 @@ def main():
 
     y = pd.get_dummies(iris[['species']]).as_matrix().T
     x = iris.drop('species', 1).as_matrix().T
+    x = normalize(x, axis = 0)
 
     np.random.seed(111)
+
     model(Y = y, X = x, learning_rate = learning_rate, n_iterations = n_iterations)
 
 if __name__ == "__main__":
